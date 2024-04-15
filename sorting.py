@@ -1,5 +1,5 @@
 import os
-
+import csv
 
 def read_data(file_name):
     """
@@ -11,10 +11,25 @@ def read_data(file_name):
     cwd_path = os.getcwd()
     file_path = os.path.join(cwd_path, file_name)
 
+    data = {}
+    with open(file_name, mode="r", newline="") as csvfile:
+        csv_reader = csv.reader(csvfile)
+        #přečtení hlavičky = přečtení nazvu sloupců
+        headers = next(csv_reader)
+        #inicializace- pro každý sloupec- prázdný seznam v datovém slovníku
+        for header in headers:
+            data[header] = []
 
+        #načtení dat ze zbývajících řádků csv souboru
+        for row in csv_reader:
+            #
+            for i, value in enumerate(row):
+                data[headers[i]].append(float(value))
+    return data
 def main():
-    pass
-
+    file_name = "numbers.csv"
+    data = read_data(file_name)
+    print(data)
 
 if __name__ == '__main__':
     main()
